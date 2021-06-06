@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+import AddPost from './components/AddPost'
 import './App.css';
+import GetPosts from './components/GetPosts'
+
+import { Provider } from 'react-redux'
+
+import store from './store'
 
 function App() {
+
+
+  const addPost = async (post) => {
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body : JSON.stringify(post)
+    })
+    const data = await res.json()
+    console.log(data)
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store} >
+      <div className="App">
+        <h1>POSTS</h1>
+        <AddPost onAdd={addPost} />
+        <br />
+        <hr />
+        <GetPosts />
+      </div>
+    </Provider>
   );
 }
 
